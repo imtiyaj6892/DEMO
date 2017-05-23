@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="OKModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="PersonTable">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Saluation" Type="varchar" MaxLength="5" />
+          <Property Name="FirstName" Type="varchar" MaxLength="20" />
+          <Property Name="MiddleName" Type="varchar" MaxLength="20" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="Gender" Type="varchar" MaxLength="6" />
+          <Property Name="NIC" Type="varchar" MaxLength="18" />
+          <Property Name="NIC_Validity" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="price" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="department" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'OK.dbo.productinfo1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="productinfo1">
+          <Property Name="productid" Type="int" />
+          <Property Name="productname" Type="varchar" MaxLength="50" />
+          <Property Name="price" Type="int" />
+          <Property Name="status" Type="varchar" MaxLength="50" />
+        </EntityType>-->
+        <Function Name="CrudOperations" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="productid" Type="int" Mode="In" />
+          <Parameter Name="productname" Type="varchar" Mode="In" />
+          <Parameter Name="price" Type="int" Mode="In" />
+          <Parameter Name="status" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="OKModelStoreContainer">
+          <EntitySet Name="PersonTable" EntityType="Self.PersonTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OKModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="PersonTable">
+          <Key>
+            <PropertyRef Name="PersonID" />
+          </Key>
+          <Property Name="PersonID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Saluation" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="Gender" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="NIC" Type="String" MaxLength="18" FixedLength="false" Unicode="false" />
+          <Property Name="NIC_Validity" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="department" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="OKEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PersonTables" EntityType="Self.PersonTable" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <FunctionImport Name="CrudOperations" ReturnType="Collection(OKModel.CrudOperations_Result)">
+            <Parameter Name="productid" Mode="In" Type="Int32" />
+            <Parameter Name="productname" Mode="In" Type="String" />
+            <Parameter Name="price" Mode="In" Type="Int32" />
+            <Parameter Name="status" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="CrudOperations_Result">
+          <Property Type="Int32" Name="productid" Nullable="true" />
+          <Property Type="String" Name="productname" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="price" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OKModelStoreContainer" CdmEntityContainer="OKEntities">
+          <EntitySetMapping Name="PersonTables">
+            <EntityTypeMapping TypeName="OKModel.PersonTable">
+              <MappingFragment StoreEntitySet="PersonTable">
+                <ScalarProperty Name="PersonID" ColumnName="PersonID" />
+                <ScalarProperty Name="Saluation" ColumnName="Saluation" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="NIC" ColumnName="NIC" />
+                <ScalarProperty Name="NIC_Validity" ColumnName="NIC_Validity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="OKModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="department" ColumnName="department" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CrudOperations" FunctionName="OKModel.Store.CrudOperations">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="OKModel.CrudOperations_Result">
+                <ScalarProperty Name="productid" ColumnName="productid" />
+                <ScalarProperty Name="productname" ColumnName="productname" />
+                <ScalarProperty Name="price" ColumnName="price" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

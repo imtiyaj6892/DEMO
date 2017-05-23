@@ -1,0 +1,27 @@
+﻿@model MVCGridView.Models.Product
+
+
+
+@using (Ajax.BeginForm("Delete1", "Home", new AjaxOptions { HttpMethod = "Delete", UpdateTargetId = "result" }))
+{
+    <div class="form-group">
+        <label for="exampleInputEmail1">Product Id</label>
+        @Html.TextBoxFor(x => x.id, new { @class = "form-control" })
+    </div>
+   <div class="form-group">
+        <label for="exampleInputEmail1">Product Name</label>
+        @Html.TextBoxFor(x => x.name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Price</label>
+        @Html.TextBoxFor(x => x.price, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="exampleInputPassword1">Department</label>
+        @Html.TextBoxFor(x => x.department, new { @class = "form-control" })
+    </div>
+    
+    <button type="submit" class="btn btn-default">Submit</button>
+}
+
+<div id="result"></div>
